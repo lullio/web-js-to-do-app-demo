@@ -2,6 +2,9 @@ let express = require('express');
 
 let app = express();
 
+// dizer ao express para adicionar todos valores de formulários no objeto body e adicionar esse objeto body no objeto request(req), por padrão o express ñ faz isso
+app.use(express.urlencoded({extended:false}));
+
 // se receber uma requisição get para a página home
 app.get("/", function(req, res){
    res.send(`
@@ -18,9 +21,9 @@ app.get("/", function(req, res){
     <h1 class="display-4 text-center py-1">To-Do App</h1>
     
     <div class="jumbotron p-3 shadow-sm">
-      <form>
+      <form action="/create-item" method="POST">
         <div class="d-flex align-items-center">
-          <input autofocus autocomplete="off" class="form-control mr-3" type="text" style="flex: 1;">
+          <input name="item" autofocus autocomplete="off" class="form-control mr-3" type="text" style="flex: 1;">
           <button class="btn btn-primary">Add New Item</button>
         </div>
       </form>
@@ -56,6 +59,13 @@ app.get("/", function(req, res){
 </html>
    `);
 });
+
+// qdo o brownser enviar um post request para esta url 
+app.post('/create-item', function(req, res){
+  console.log(req.body.item);
+  
+});
+
 
 app.listen(3000, '0.0.0.0', function() {
    console.log('Listening to port:  ' + 3000);
