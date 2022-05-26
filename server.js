@@ -62,8 +62,8 @@ app.get("/", function(req, res){
 
 // qdo o brownser enviar um post request para esta url 
 app.post('/create-item', function(req, res){
-  console.log(req.body.item);
-  
+  console.log(req.body.item); // pegar dado que está no input do formulário
+  res.send("<p>Dado do input foi enviado para o console.log</p>")
 });
 
 
