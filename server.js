@@ -1,6 +1,8 @@
+let reload = require('reload');
 let express = require('express');
 
 let app = express();
+
 
 // dizer ao express para adicionar todos valores de formulários no objeto body e adicionar esse objeto body no objeto request(req), por padrão o express ñ faz isso
 app.use(express.urlencoded({extended:false}));
@@ -13,12 +15,12 @@ app.get("/", function(req, res){
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple To-Do App !!</title>
+  <title>Simple To-Do App!!!</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body>
   <div class="container">
-    <h1 class="display-4 text-center py-1">To-Do App</h1>
+    <h1 class="display-4 text-center py-1">To-Do App!!!</h1>
     
     <div class="jumbotron p-3 shadow-sm">
       <form action="/create-item" method="POST">
@@ -54,7 +56,7 @@ app.get("/", function(req, res){
     </ul>
     
   </div>
-  
+  <script src="/reload/reload.js"></script> 
 </body>
 </html>
    `);
@@ -69,4 +71,4 @@ app.post('/create-item', function(req, res){
 app.listen(3000, '0.0.0.0', function() {
    console.log('Listening to port:  ' + 3000);
 });
-
+reload(app);
