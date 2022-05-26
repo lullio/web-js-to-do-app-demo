@@ -62,11 +62,11 @@ app.get("/", function(req, res){
 
 // qdo o brownser enviar um post request para esta url 
 app.post('/create-item', function(req, res){
+  res.send("<p>Dado do input foi enviado para o console.log do vs code, ñ foi pra o console.log do browser ñ, lembra q isso é node.js</p>")
   console.log(req.body.item); // pegar dado que está no input do formulário
-  res.send("<p>Dado do input foi enviado para o console.log</p>")
 });
-
 
 app.listen(3000, '0.0.0.0', function() {
    console.log('Listening to port:  ' + 3000);
 });
+
