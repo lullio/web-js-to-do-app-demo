@@ -1,8 +1,25 @@
-let reload = require('reload');
 let express = require('express');
+// let mongodb = require('mongodb').MongoClient;
+// destructuring - desconstruindo, em vez de usar código acima, vamos desconstruir pra usar somente os pacotes/objetos que queremos do mongodb, ñ queremos usar o próprio pacote mongodb, queremos oq tem dentro dele.
+let {MongoClient} = require('mongodb'); // nome da variável é o próprio nome do pacote
 
 let app = express();
+let db
 
+async function go(){
+    // nova instancia
+  let client = new MongoClient('mongodb+srv://admin:admin@cluster0.6arhq.mongodb.net/TodoApp?retryWrites=true&w=majority'); // no mongodb nuvem clicar em connect no seu cluster
+  await client.connect(); //conectar no bd
+  // problema do código acima, temos que esperar ele ser concluído para as linhas abaixo serem executas, o programa para aqui. Ñ sabemos qnt tempo vai demorar. 
+  // Solução é usar await mas await só funciona em ansync functions no JS
+  db = client.db(); // torna nosso bd disponível
+  // qdo nossa aplicação realmente for rodar e for referenciar o db vai estar apontando para o bd
+  app.listen(3000, '0.0.0.0', function() {
+      console.log('Listening to port:  ' + 3000);
+      });
+  
+  }
+go();
 
 // dizer ao express para adicionar todos valores de formulários no objeto body e adicionar esse objeto body no objeto request(req), por padrão o express ñ faz isso
 app.use(express.urlencoded({extended:false}));
@@ -56,7 +73,6 @@ app.get("/", function(req, res){
     </ul>
     
   </div>
-  <script src="/reload/reload.js"></script> 
 </body>
 </html>
    `);
@@ -64,11 +80,12 @@ app.get("/", function(req, res){
 
 // qdo o brownser enviar um post request para esta url 
 app.post('/create-item', function(req, res){
-  res.send("<p>Dado do input foi enviado para o console.log do vs code, ñ foi pra o console.log do browser ñ, lembra q isso é node.js</p>")
-  console.log(req.body.item); // pegar dado que está no input do formulário
+
+  // criar um documento no banco de dados MONGODB
+  // o método collection vai selecionar uma coleção chamada items no banco de dados, insertOne serve pra criar um documento/objeto no bd
+  db.collection('items').insertOne({text: req.body.item}, function(){
+    res.send("<p>Thanks for submitting the form.</p>")
+  })  
+  // console.log(req.body.item); // pegar dado que está no input do formulário
 });
 
-app.listen(3000, '0.0.0.0', function() {
-   console.log('Listening to port:  ' + 3000);
-});
-reload(app);
