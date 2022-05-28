@@ -14,8 +14,8 @@ async function go(){
   // Solução é usar await mas await só funciona em ansync functions no JS
   db = client.db(); // torna nosso bd disponível
   // qdo nossa aplicação realmente for rodar e for referenciar o db vai estar apontando para o bd
-  app.listen(3000, '0.0.0.0', function() {
-      console.log('Listening to port:  ' + 3000);
+  app.listen(5000, '0.0.0.0', function() {
+      console.log('Listening to port:  ' + 5000);
       });
   
   }
@@ -26,8 +26,13 @@ app.use(express.urlencoded({extended:false}));
 
 // se receber uma requisição get para a página home
 app.get("/", function(req, res){
+  // queremos primeiro ler os dados do bd e depois mostrar o conteúdo
   
+  // find serve para encontrar todos documentos na coleção mas os dados vem em formato de sistema mongodb (só é útil para mongodb)
+  // toArray vai converter para um array javascript super fácil de lidar
   db.collection('items').find().toArray(function(err, items){
+    // toArray recebe uma funcao q é executada qdo a ação find for completada
+    // 1º parm é para erros, 2ºpar é um array javascript de todos items do banco de dados
    // console.log(items);
   res.send(`
       <!DOCTYPE html>
