@@ -6,6 +6,9 @@ let {MongoClient} = require('mongodb'); // nome da variável é o próprio nome 
 let app = express();
 let db
 
+// usar a pasta PUBLIC do projeto, todos arquivos dentro acessíveis no root do servidor
+app.use(express.static('PUBLIC'));
+
 async function go(){
     // nova instancia
   let client = new MongoClient('mongodb+srv://admin:admin@cluster0.6arhq.mongodb.net/TodoApp?retryWrites=true&w=majority'); // no mongodb nuvem clicar em connect no seu cluster > connect to app > modificar a string adicionando sua senha e nome do banco de dados antes do ?
@@ -20,10 +23,10 @@ async function go(){
   }
 go();
 
-// dizer ao express para adicionar todos valores de formulários no objeto body e adicionar esse objeto body no objeto request(req), por padrão o express ñ faz isso
+// dizer ao express para adicionar todos valores de formuláriose e posts no objeto body q vive no objeto request(req), por padrão o express ñ faz isso
 app.use(express.urlencoded({extended:false}));
-// usar a pasta PUBLIC do projeto, todos arquivos dentro acessíveis no root do servidor
-app.use(express.static('PUBLIC'));
+// dizer ao express para fazer mesma coisa de cima mas para asynchronous requests, vai adicionar os dados do AXIOS(asynchronous requests) no obj body
+app.use(express.json());
 
 // se receber uma requisição get para a página home
 app.get("/", function(req, res){
@@ -90,3 +93,7 @@ app.post('/create-item', function(req, res){
   // console.log(req.body.item); // pegar dado que está no input do formulário
 });
 
+app.post("/update-item", function(req, res){
+  console.log(req.body.text);
+  res.send("sucess");
+})
