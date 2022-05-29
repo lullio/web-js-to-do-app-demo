@@ -82,7 +82,7 @@ app.post('/create-item', function(req, res){
   // criar um documento no banco de dados MONGODB
   // o método collection vai selecionar uma coleção chamada items no banco de dados, insertOne serve pra criar um documento/objeto no bd
   db.collection('items').insertOne({text: req.body.item}, function(){
-    res.send("<p>Thanks for submitting the form.</p>")
+    res.redirect("/");
   })  
   // console.log(req.body.item); // pegar dado que está no input do formulário
 });
