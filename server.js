@@ -17,12 +17,13 @@ async function go(){
   app.listen(5000, '0.0.0.0', function() {
       console.log('Listening to port:  ' + 5000);
       });
-  
   }
 go();
 
 // dizer ao express para adicionar todos valores de formulários no objeto body e adicionar esse objeto body no objeto request(req), por padrão o express ñ faz isso
 app.use(express.urlencoded({extended:false}));
+// usar a pasta PUBLIC do projeto, todos arquivos dentro acessíveis no root do servidor
+app.use(express.static('PUBLIC'));
 
 // se receber uma requisição get para a página home
 app.get("/", function(req, res){
@@ -69,6 +70,8 @@ app.get("/", function(req, res){
         </ul>
         
       </div>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script type="text/javascript" src="/browser.js"></script>
     </body>
     </html>
   `);
