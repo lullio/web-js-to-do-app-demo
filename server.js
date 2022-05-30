@@ -1,7 +1,7 @@
 let express = require('express');
 // let mongodb = require('mongodb').MongoClient;
 // destructuring - desconstruindo, em vez de usar código acima, vamos desconstruir pra usar somente os pacotes/objetos que queremos do mongodb, ñ queremos usar o próprio pacote mongodb, queremos oq tem dentro dele.
-let {MongoClient} = require('mongodb'); // nome da variável é o próprio nome do pacote
+let {MongoClient, ObjectId} = require('mongodb'); // nome da variável é o próprio nome do pacote
 
 let app = express();
 let db
@@ -65,7 +65,7 @@ app.get("/", function(req, res){
             return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
             <span class="item-text">${item.text}</span>
             <div>
-              <button class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
+              <button data-id="${item._id}" class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
               <button class="delete-me btn btn-danger btn-sm">Delete</button>
             </div>
           </li>`
@@ -94,6 +94,9 @@ app.post('/create-item', function(req, res){
 });
 
 app.post("/update-item", function(req, res){
-  console.log(req.body.text);
-  res.send("sucess");
-})
+  // receber os dados do axios no browser.js, basta usar req.body.nomeDoCampo
+  // atualizar banco de dados, 1ºparm: qual documento queremos atualizar, 2ºparam: oq queremos atualizar nesse documento, 3º param: funcao apos alterar cm sucesso
+  db.collection('items').findOneAndUpdate({_id: new ObjectId(req.body.id)},{$set: {text: req.body.text}},function(){
+    res.send("success");
+  });
+});
