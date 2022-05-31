@@ -95,8 +95,10 @@ app.post('/create-item-browser', function(req, res){
 
 // REQUISIÇÃO ASSÍNCRONA PELO AXIOS, O DE CIMA É PELO BROWSER AO ENVIAR FORMULÁRIO(ruim pois precisa dar refresh na pág, demora mais)
 app.post("/create-item", function(req, res){
-  db.collection('items').insertOne({text: req.body.text}, () => {
-    res.send("ok");
+  db.collection('items').insertOne({text: req.body.text}, (err, info) => {
+    // javascript object notation - enviar um objeto javascript q representa o documento mongodb q foi criado no cód acima
+    // precisou adicionar parametros err,info na funcao acima
+    res.json({_id: info.insertedId, text: req.body.text}) // retornar um objeto javascript para o browser com os nomes  _id contendo o id que o mongodb acabou de criar para o item(insertedId) e text contendo o valor do input do browser
   })
 })
 

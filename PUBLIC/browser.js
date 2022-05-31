@@ -1,10 +1,23 @@
 // CREATE-ITEM
 let input = document.getElementById("input");
-let listItem = document.getElementById("list-item");
+
+// criar html, lista
+// como vai saber oq eh ${item._id}? , o node precisa enviar um json lá no app.post(create-item)
+function htmlItemTemplate(item){
+   return  `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
+   <span class="item-text">${item.text}</span>
+   <div>
+     <button data-id="${item._id}" class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
+     <button data-id="${item._id}" class="delete-me btn btn-danger btn-sm">Delete</button>
+   </div>
+ </li>`
+}
+
 document.getElementById("create-form").addEventListener("submit", function(e){
    e.preventDefault();
-   axios.post("/create-item", {text: input.value}).then( () => {
-      alert("hi");
+   // após enviar os dados(.post()), vai executar a função q tá no then() e nosso node está enviando dados como response/reposta para cá, axios torna fácil acessar esses dados basta colocar um parametro na func
+   axios.post("/create-item", {text: input.value}).then( (response) => {
+      document.getElementById("list-item").insertAdjacentHTML("beforeend", htmlItemTemplate(response.data)); // acessar o obj javascript q representa o novo doc adicionado no banco de dados, q o server.js ta mandando pra ca
    }).catch( (e) => {
       console.log(e);
    })
@@ -51,7 +64,6 @@ document.addEventListener("click", function(e){
             // https://developer.mozilla.org/pt-BR/docs/Web/API/Event/target
             e.target.parentElement.parentElement.querySelector('.item-text').innerHTML = userInput;
 
-            e.target.querySelector
          }).catch(function(){
             console.log("error");
          })
