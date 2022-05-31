@@ -1,10 +1,24 @@
+// CREATE-ITEM
+let input = document.getElementById("input");
+let listItem = document.getElementById("list-item");
+document.getElementById("create-form").addEventListener("submit", function(e){
+   e.preventDefault();
+   axios.post("/create-item", {text: input.value}).then( () => {
+      alert("hi");
+   }).catch( (e) => {
+      console.log(e);
+   })
+
+})
+
+
 //DELETE-ITEM
 document.addEventListener("click", function(e){
    if(e.target.classList.contains("delete-me")){ 
       // e.target = botao delete-me
       // window.confirm(janela de confirmação - se clicar no ok retorna true)
       if(confirm("Deseja realmente deletar?")){
-         axios.post("/delete-item", {id: e.target.getAttribute('data-id')}).then( ()=> {
+         axios.post("/delete-item", {id: e.target.getAttribute()}).then( ()=> {
             e.target.parentElement.parentElement.remove();
          }).catch( (err) => {
             console.log(err);
