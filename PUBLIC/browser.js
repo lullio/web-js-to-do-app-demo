@@ -18,6 +18,8 @@ document.getElementById("create-form").addEventListener("submit", function(e){
    // após enviar os dados(.post()), vai executar a função q tá no then() e nosso node está enviando dados como response/reposta para cá, axios torna fácil acessar esses dados basta colocar um parametro na func
    axios.post("/create-item", {text: input.value}).then( (response) => {
       document.getElementById("list-item").insertAdjacentHTML("beforeend", htmlItemTemplate(response.data)); // acessar o obj javascript q representa o novo doc adicionado no banco de dados, q o server.js ta mandando pra ca
+      input.value = "";
+      input.focus();
    }).catch( (e) => {
       console.log(e);
    })
