@@ -13,6 +13,14 @@ function htmlItemTemplate(item){
  </li>`
 }
 
+// INITIAL PAGE LOAD RENDER
+// acessar o raw data(array de objetos do banco de dados(items)) enviado pelo browser(JSON.stringify)
+let ourHTML = items.map(function(item, indice, arr){
+   return htmlItemTemplate(item); // vai passar o current item do array(item)
+}).join('');
+document.getElementById("list-item").insertAdjacentHTML("beforeend", ourHTML);
+
+// CRIAR ITEM AXIOS
 document.getElementById("create-form").addEventListener("submit", function(e){
    e.preventDefault();
    // após enviar os dados(.post()), vai executar a função q tá no then() e nosso node está enviando dados como response/reposta para cá(.json), axios torna fácil acessar esses dados basta colocar um parametro na func
@@ -34,7 +42,7 @@ document.addEventListener("click", function(e){
       // e.target = botao delete-me
       // window.confirm(janela de confirmação - se clicar no ok retorna true)
       if(confirm("Deseja realmente deletar?")){
-         axios.post("/delete-item", {id: e.target.getAttribute()}).then( ()=> {
+         axios.post("/delete-item", {id: e.target.getAttribute('data-id')}).then( ()=> {
             e.target.parentElement.parentElement.remove();
          }).catch( (err) => {
             console.log(err);
