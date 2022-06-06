@@ -6,7 +6,7 @@ let {MongoClient, ObjectId} = require('mongodb'); // nome da variável é o pró
 let app = express();
 let db
 
-// usar a pasta PUBLIC do projeto, todos arquivos dentro acessíveis no root do servidor
+// usar a pasta PUBLIC do projeto, todos arquivos dentro acessíveis no root do servidor, script no html abaixo
 app.use(express.static('PUBLIC'));
 
 async function go(){
@@ -22,6 +22,8 @@ async function go(){
       });
   }
 go();
+"mongodbSrv://admin:admin@cluster0.6arhq.mongodb.net/retryWrites=true&w=majority"
+
 
 // dizer ao express para adicionar todos valores de formuláriose e posts no objeto body q vive no objeto request(req), por padrão o express ñ faz isso
 app.use(express.urlencoded({extended:false}));

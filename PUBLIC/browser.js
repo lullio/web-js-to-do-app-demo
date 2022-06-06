@@ -15,7 +15,8 @@ function htmlItemTemplate(item){
 
 document.getElementById("create-form").addEventListener("submit", function(e){
    e.preventDefault();
-   // após enviar os dados(.post()), vai executar a função q tá no then() e nosso node está enviando dados como response/reposta para cá, axios torna fácil acessar esses dados basta colocar um parametro na func
+   // após enviar os dados(.post()), vai executar a função q tá no then() e nosso node está enviando dados como response/reposta para cá(.json), axios torna fácil acessar esses dados basta colocar um parametro na func
+   // o response no parametro do then() é a resposta do nosso servidor node pra o browser
    axios.post("/create-item", {text: input.value}).then( (response) => {
       document.getElementById("list-item").insertAdjacentHTML("beforeend", htmlItemTemplate(response.data)); // acessar o obj javascript q representa o novo doc adicionado no banco de dados, q o server.js ta mandando pra ca
       input.value = "";
@@ -69,6 +70,8 @@ document.addEventListener("click", function(e){
          }).catch(function(){
             console.log("error");
          })
+      }else if(userInput == null){ // o botao cancelar do prompt retorna null
+         alert("clicou no cancelar");
       }
    }
 });
