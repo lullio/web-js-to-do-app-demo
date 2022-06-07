@@ -1,4 +1,7 @@
+// EXPRESS LIBRARY - FRAMEWORK USING TO CREATE WEB APPLICATIONS WITH NODE
 let express = require('express');
+let sanitizeHTML = require('sanitize-html');
+
 // let mongodb = require('mongodb').MongoClient;
 // destructuring - desconstruindo, em vez de usar código acima, vamos desconstruir pra usar somente os pacotes/objetos que queremos do mongodb, ñ queremos usar o próprio pacote mongodb, queremos oq tem dentro dele.
 let {MongoClient, ObjectId} = require('mongodb'); // nome da variável é o próprio nome do pacote
@@ -22,13 +25,28 @@ async function go(){
       });
   }
 go();
-"mongodbSrv://admin:admin@cluster0.6arhq.mongodb.net/retryWrites=true&w=majority"
 
 
 // dizer ao express para adicionar todos valores de formuláriose e posts no objeto body q vive no objeto request(req), por padrão o express ñ faz isso
 app.use(express.urlencoded({extended:false}));
 // dizer ao express para fazer mesma coisa de cima mas para asynchronous requests, vai adicionar os dados do AXIOS(asynchronous requests) no obj body
 app.use(express.json());
+
+app.use(passwordProtected); // express vai usar essa função como 1º função em tds requisições app.get("/", passwordProtected, function(req, res){
+
+// adicionando segurança pedindo login
+function passwordProtected(req, res, next){
+  // 1º Pede pro browser inserir usuario/senha pra autenticar, 2º autent basica realm=nome do app'
+  res.set('WWW-Authenticate', 'Basic realm="Simple Todo App"');
+  console.log(req.headers.authorization); // mostra usuário e senha digitados, um código
+  if(req.headers.authorization == 'Basic amF2YXNjcmlwdDpmdWxsc3RhY2s='){ // acessar usuario/senha que digitaram
+    next(); // dizer ao express pra chamar a próx função
+  }else{
+    res.status(401).send("Authentication required"); // 401 = unauthorizaed
+  }
+}
+
+// express aceita múltiplas funções, em vez só de 2 argumentos("/url", function(req,res))
 
 // se receber uma requisição get para a página home
 app.get("/", function(req, res){
@@ -86,7 +104,6 @@ app.get("/", function(req, res){
 
 // qdo o brownser enviar um post request para esta url 
 app.post('/create-item-browser', function(req, res){
-
   // criar um documento no banco de dados MONGODB
   // o método collection vai selecionar uma coleção chamada items no banco de dados, insertOne serve pra criar um documento/objeto no bd
   db.collection('items').insertOne({text: req.body.item}, function(){
@@ -97,17 +114,19 @@ app.post('/create-item-browser', function(req, res){
 
 // REQUISIÇÃO ASSÍNCRONA PELO AXIOS, O DE CIMA É PELO BROWSER AO ENVIAR FORMULÁRIO(ruim pois precisa dar refresh na pág, demora mais)
 app.post("/create-item", function(req, res){
-  db.collection('items').insertOne({text: req.body.text}, (err, info) => {
+  let safeText = sanitizeHTML(req.body.text, {allowedTags: [], allowedAttributes: {}});
+  db.collection('items').insertOne({text: safeText}, (err, info) => {
     // javascript object notation - enviar um objeto javascript q representa o documento mongodb q foi criado no cód acima
     // precisou adicionar parametros err,info na funcao acima
-    res.json({_id: info.insertedId, text: req.body.text}) // retornar um objeto javascript para o browser com os nomes  _id contendo o id que o mongodb acabou de criar para o item(insertedId) e text contendo o valor do input do browser
+    res.json({_id: info.insertedId, text: safeText}) // retornar um objeto javascript para o browser com os nomes  _id contendo o id que o mongodb acabou de criar para o item(insertedId) e text contendo o valor do input do browser
   })
 })
 
 app.post("/update-item", function(req, res){
+  let safeText = sanitizeHTML(req.body.text, {allowedTags: [], allowedAttributes: {}});
   // receber os dados do axios no browser.js, basta usar req.body.nomeDoCampo
   // atualizar banco de dados, 1ºparm: qual documento queremos atualizar, 2ºparam: oq queremos atualizar nesse documento, 3º param: funcao apos alterar cm sucesso
-  db.collection('items').findOneAndUpdate({_id: new ObjectId(req.body.id)},{$set: {text: req.body.text}},function(){
+  db.collection('items').findOneAndUpdate({_id: new ObjectId(req.body.id)},{$set: {text: safeText}},function(){
     res.send("success");
   });
 });
