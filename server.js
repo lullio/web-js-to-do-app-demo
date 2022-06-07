@@ -27,9 +27,10 @@ async function go(){
   db = client.db(); // torna nosso bd disponível
   // qdo nossa aplicação realmente for rodar e for referenciar o db vai estar apontando para o bd
 
-  app.listen(port, '0.0.0.0', function() {
-      console.log('Listening to port:  ' + port);
-    });
+  app.listen(port) 
+    // '0.0.0.0', function() {
+    //   console.log('Listening to port:  ' + port);
+    // });
   }
 go();
 
