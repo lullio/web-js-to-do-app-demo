@@ -9,6 +9,12 @@ let {MongoClient, ObjectId} = require('mongodb'); // nome da variável é o pró
 let app = express();
 let db
 
+// porta
+let port = process.env.PORT // pegar porta do heroku
+if(port == null || port == ""){
+  port = 5000
+} 
+
 // usar a pasta PUBLIC do projeto, todos arquivos dentro acessíveis no root do servidor, script no html abaixo
 app.use(express.static('PUBLIC'));
 
@@ -20,9 +26,10 @@ async function go(){
   // Solução é usar await mas await só funciona em ansync functions no JS
   db = client.db(); // torna nosso bd disponível
   // qdo nossa aplicação realmente for rodar e for referenciar o db vai estar apontando para o bd
-  app.listen(5000, '0.0.0.0', function() {
-      console.log('Listening to port:  ' + 5000);
-      });
+
+  app.listen(port, '0.0.0.0', function() {
+      console.log('Listening to port:  ' + port);
+    });
   }
 go();
 
