@@ -9,12 +9,6 @@ let {MongoClient, ObjectId} = require('mongodb'); // nome da variável é o pró
 let app = express();
 let db
 
-// porta
-let port = process.env.PORT // pegar porta do heroku
-if(port == null || port == ""){
-  port = 5000
-} 
-
 // usar a pasta PUBLIC do projeto, todos arquivos dentro acessíveis no root do servidor, script no html abaixo
 app.use(express.static('PUBLIC'));
 
@@ -27,7 +21,9 @@ async function go(){
   db = client.db(); // torna nosso bd disponível
   // qdo nossa aplicação realmente for rodar e for referenciar o db vai estar apontando para o bd
 
-  app.listen(port) 
+  app.listen(process.env.PORT || 5000, function(){
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  });
     // '0.0.0.0', function() {
     //   console.log('Listening to port:  ' + port);
     // });
