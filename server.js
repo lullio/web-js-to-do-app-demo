@@ -43,7 +43,8 @@ function passwordProtected(req, res, next){
   // 1º Pede pro browser inserir usuario/senha pra autenticar, 2º autent basica realm=nome do app'
   res.set('WWW-Authenticate', 'Basic realm="Simple Todo App"');
   console.log(req.headers.authorization); // mostra usuário e senha digitados, um código
-  if(req.headers.authorization == 'Basic amF2YXNjcmlwdDpmdWxsc3RhY2s='){ // acessar usuario/senha que digitaram
+  // user: felipe // pass: javascript
+  if(req.headers.authorization == 'Basic ZmVsaXBlOmphdmFzY3JpcHQ='){ // acessar usuario/senha que digitaram
     next(); // dizer ao express pra chamar a próx função
   }else{
     res.status(401).send("Authentication required"); // 401 = unauthorizaed
@@ -68,22 +69,22 @@ app.get("/", function(req, res){
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Simple To-Do App!!!</title>
+      <title>Lista de Tarefas Felipe!</title>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     </head>
     <body>
       <div class="container">
-        <h1 class="display-4 text-center py-1">To-Do App!!!</h1>
+        <h1 class="display-4 text-center py-1">Lista de Tarefas Felipe!</h1>
         
         <div class="jumbotron p-3 shadow-sm">
           <form id="create-form" action="/create-item" method="POST">
             <div class="d-flex align-items-center">
               <input id="input" name="item" autofocus autocomplete="off" class="form-control mr-3" type="text" style="flex: 1;">
-              <button class="btn btn-primary">Add New Item</button>
+              <button class="btn btn-primary">Adicionar Tarefa</button>
             </div>
           </form>
         </div>
-        
+        <p id="total"></p>
         <ul id="list-item" class="list-group pb-5">
 
         </ul>

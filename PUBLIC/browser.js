@@ -7,8 +7,8 @@ function htmlItemTemplate(item){
    return  `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
    <span class="item-text">${item.text}</span>
    <div>
-     <button data-id="${item._id}" class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
-     <button data-id="${item._id}" class="delete-me btn btn-danger btn-sm">Delete</button>
+     <button data-id="${item._id}" class="edit-me btn btn-secondary btn-sm mr-1">Editar</button>
+     <button data-id="${item._id}" class="delete-me btn btn-danger btn-sm">Excluir</button>
    </div>
  </li>`
 }
@@ -26,6 +26,8 @@ document.getElementById("create-form").addEventListener("submit", function(e){
    // após enviar os dados(.post()), vai executar a função q tá no then() e nosso node está enviando dados como response/reposta para cá(.json), axios torna fácil acessar esses dados basta colocar um parametro na func
    // o response no parametro do then() é a resposta do nosso servidor node pra o browser
    axios.post("/create-item", {text: input.value}).then( (response) => {
+      console.log(response.data); // olhar no console do navegador
+      console.log(response); // olhar no console do navegador
       document.getElementById("list-item").insertAdjacentHTML("beforeend", htmlItemTemplate(response.data)); // acessar o obj javascript q representa o novo doc adicionado no banco de dados, q o server.js ta mandando pra ca
       input.value = "";
       input.focus();
