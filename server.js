@@ -140,4 +140,13 @@ app.post("/delete-item", function(req, res){
   db.collection('items').deleteOne({_id: new ObjectId(req.body.id)}, function(){
     res.send("sucess");
   })
+  // apagar tudo
+  // db.collection('items').deleteMany({})
+})
+app.post("/delete-all", function(req, res){
+  db.collection('items').deleteMany({}, function(){
+    res.send("sucess");
+  })
+  // apagar tudo
+  // db.collection('items').deleteMany({})
 })

@@ -34,9 +34,11 @@ document.getElementById("create-form").addEventListener("submit", function(e){
    }).catch( (e) => {
       console.log(e);
    })
-
 })
 
+
+
+// document.getElementById("list-item").insertAdjacentHTML("beforeend", htmlItemTemplate(response.data));
 
 //DELETE-ITEM
 document.addEventListener("click", function(e){
@@ -85,3 +87,35 @@ document.addEventListener("click", function(e){
       }
    }
 });
+
+// DELETE ALL ITEMS
+function addButton(){
+   //if(document.querySelectorAll('li span').length >= 1){
+      let divc = document.createElement('div');
+      divc.className = "text-center";
+      let btn2 = document.createElement("button");
+      btn2.innerHTML = "Excluir Todos items do Banco de Dados";
+      btn2.type = "submit";
+      btn2.name = "formBtn";
+      btn2.className = "btn btn-danger btn-sm delete-all";
+      document.querySelector('.container').appendChild(divc);
+      divc.appendChild(btn2);
+   
+      document.querySelector('.delete-all').addEventListener("click", function(e){
+         if(document.querySelectorAll('li span').length >= 1){
+            if(confirm(`Deseja realmente deletar todos os items (${document.querySelectorAll('li span').length})?`)){
+               axios.post("/delete-all", {id: e.target.getAttribute('data-id')}).then( ()=> {
+                  document.getElementById("list-item").querySelectorAll('li').forEach(li => li.remove());
+               }).catch( (err) => {
+                  console.log(err);
+               })
+            }else{
+               alert("cancelado com sucesso!");
+            }
+         }else{
+            alert('Ops, não tem nenhum item no banco de dados, adicione um item primeiro');
+         }
+         
+      })
+   //}
+}addButton()
