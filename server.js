@@ -1,6 +1,8 @@
 // EXPRESS LIBRARY - FRAMEWORK USING TO CREATE WEB APPLICATIONS WITH NODE
 let express = require('express');
 let sanitizeHTML = require('sanitize-html');
+require('dotenv').config();
+
 
 // let mongodb = require('mongodb').MongoClient;
 // destructuring - desconstruindo, em vez de usar código acima, vamos desconstruir pra usar somente os pacotes/objetos que queremos do mongodb, ñ queremos usar o próprio pacote mongodb, queremos oq tem dentro dele.
@@ -14,7 +16,7 @@ app.use(express.static('PUBLIC'));
 
 async function go(){
     // nova instancia
-  let client = new MongoClient('mongodb+srv://admin:admin@cluster0.6arhq.mongodb.net/TodoApp?retryWrites=true&w=majority'); // no mongodb nuvem clicar em connect no seu cluster > connect to app > modificar a string adicionando sua senha e nome do banco de dados antes do ?
+  let client = new MongoClient(process.env.MONGODB_URL); // no mongodb nuvem clicar em connect no seu cluster > connect to app > modificar a string adicionando sua senha e nome do banco de dados antes do ?
   await client.connect(); //conectar no bd
   // problema do código acima, temos que esperar ele ser concluído para as linhas abaixo serem executas, o programa para aqui. Ñ sabemos qnt tempo vai demorar. 
   // Solução é usar await mas await só funciona em ansync functions no JS
