@@ -17,6 +17,7 @@
     "mongodb": "^4.6.0",
     "nodemon": "^2.0.16",
     "reload": "^3.2.0",
-    "sanitize-html": "^2.7.0"
+    "sanitize-html": "^2.7.0",
+    "serverless-http": "^3.2.0"
   }
 }

@@ -1,0 +1,33 @@
+[build]
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["mongodb", "sanitize-html", "dotenv"]
+
+# A HOME ("/") é renderizada pelo Express dentro da Function:
+[[redirects]]
+  from = "/"
+  to = "/.netlify/functions/api"
+  status = 200
+
+# Suas rotas de API (mesmos paths que o Axios chama no navegador):
+[[redirects]]
+  from = "/create-item"
+  to = "/.netlify/functions/api/create-item"
+  status = 200
+
+[[redirects]]
+  from = "/update-item"
+  to = "/.netlify/functions/api/update-item"
+  status = 200
+
+[[redirects]]
+  from = "/delete-item"
+  to = "/.netlify/functions/api/delete-item"
+  status = 200
+
+[[redirects]]
+  from = "/delete-all"
+  to = "/.netlify/functions/api/delete-all"
+  status = 200
